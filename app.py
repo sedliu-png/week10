@@ -224,11 +224,10 @@ if user_input:
                             chunk = json.loads(data_str)
                         except json.JSONDecodeError:
                             continue
-                        delta = (
-                            chunk.get("choices", [{}])[0]
-                            .get("delta", {})
-                            .get("content")
-                        )
+                        choices = chunk.get("choices") or []
+                        if not choices:
+                            continue
+                        delta = choices[0].get("delta", {}).get("content")
                         if delta:
                             full_reply += delta
                             placeholder.write(full_reply)
